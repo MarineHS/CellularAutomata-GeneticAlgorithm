@@ -1,7 +1,10 @@
 from model import *
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+import argparse
+import json
 
+### main function
 def main(matrix=None, size=(None, None), seed=None, time=100):
     """
     Create a matrix and update it according to Conway's Game of Life Rules
@@ -18,16 +21,13 @@ def main(matrix=None, size=(None, None), seed=None, time=100):
     """
 
     # Verify or create the initial matrix
-    if matrix != None:
+    if matrix is not None:
         m = verify_matrix(matrix) # use provided matrix
 
     # Create the matrix if needed
-    elif size != (None, None):
+    else:
         row, column = size
         m = create_matrix(row, column, seed) # generate random matrix
-
-    else:
-        raise ValueError("Either provide a matrix or a valid size.")
 
     # Create the figure and display the initial state
     fig, ax = plt.subplots()
@@ -53,9 +53,31 @@ def main(matrix=None, size=(None, None), seed=None, time=100):
 
     return anim
 
-### Test main
-#anim = main(size=(100,100), seed=50)
-#anim.save('animation.gif', writer='PillowWriter', fps=10)
+### Parse the arguments
+if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser(description='Run Conway\'s Game of Life')
+    input_type = parser.add_mutually_exclusive_group(required=True)
+    input_type.add_argument("-m", "--matrix", type=str, help="Path to a JSON file containing the input matrix")
+    input_type.add_argument("-s", "--size", nargs=2, type=int, help="Size (row, column) of a random matrix")
+
+    parser.add_argument("--seed", type=int, help="Random seed for reproducibility")
+    parser.add_argument("--time", type=int, default=100, help="Number of frames / updates. Default is 100")
+    parser.add_argument("--save", type=str, help="Save a gif animation under the given filename")
+    args = parser.parse_args()
+
+    size = tuple(args.size) if args.size else (None, None)
+    if args.matrix:
+        with open(args.matrix, 'r') as file:
+            matrix = json.load(file)
+    else:
+        matrix = None
+
+    anim = main(matrix=matrix, size=size, seed=args.seed, time=args.time)
+    
+    if args.save:
+        anim.save(args.save + '.gif', writer='PillowWriter', fps=10)
+
 
 
 
