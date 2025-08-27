@@ -5,12 +5,12 @@ import numpy as np
 """
 Performance comparison of two matrix update functions used in the main script.
 Both functions apply Conway's Game of Life rules to update a matrix:
-    - transition_deppcopy: updates the matrix using a deepcopy of the original
-    - transition_fillmatrix: creates an empty matrix and fill it based on the originam
+    - transition_deepcopy: updates the matrix using a deepcopy of the original
+    - transition_fillmatrix: creates an empty matrix and fill it based on the origin
 """
 
 # Create a random binary matrix for the test.
-# Fix the seed for reproductibility.
+# Fix the seed for reproducibility.
 M=create_matrix(100, 100, seed=885)
 
 # Parameters for the performance test

@@ -1,30 +1,33 @@
 # Exploring Cellular Automata: Deterministic and Evolutionary Approaches
 
-Objective: Programming cellular automata using deterministic rules and finding new rules using evolutionary approches. 
+This project began as a Master’s assignment, where I first explored cellular automata and genetic algorithms. I truly enjoyed the process back then, even though my focus was mostly on testing a few parameters. Today, I am revisiting the project with fresh perspective, eager to explore it more thoroughly and experiment with new ideas.
 
-Plan:
-1. Description of cellular automata
-2. A deterministic approch: Conway's Game of Life
-3. An evolutionary approch: improving the search of rules
-4. Applications:
-    4.1 Modeling fluid dynamics
-    4.2 Finding the best rule
+This README presents the fundamental concepts behind the project and its overall organisation.
 
+The repository is structured into three main parts:
+
+**Part 1: Implementation of Conway's Game of Life** — folder *GameOfLife*.
+
+**Part 2: Implementation of the genetic algorithm** — :construction: *Under construction*.
+
+**Part 3: Applications** — :construction: *Under construction*.
 
 
 ## What are cellular automata?
 
-Cellular automata (CA) are discrete spatial systems introduced by John Von Neumann in 1940s. They consist of a finite number of cells evolving through time according to a set of predefined rules. Figure 1 illustrate the evolution of a 1D cellular automaton. In this example, the CA is represented by a vector of 16 cells, but depending on the model, a 2D or even 3D grids may be used. Each cell of the vector takes a value (or state) from a finite set; 0 (white) or 1 (black) in our case. At each time step, the state of each cell updated based on its neighbouring cells. In the example below, the rules are:
+Cellular automata (CA) are discrete spatial systems introduced by John Von Neumann in 1940s. They consist of a finite number of cells evolving through time according to a set of predefined rules. Figure 1 illustrate the evolution of a 1D cellular automaton. In this example, the CA is represented by a vector of 16 cells, but depending on the model, a 2D or even 3D grids may be used. Each cell of the vector takes a value (or state) from a finite set; 0 (white) or 1 (black) in our case. At each time step, the state of each cell updated based on its neighbouring cells. 
+
+In the example below, the rules are:
 1. If a cell `n` is in state 0 and the two previous cells (n-1 and n-2) are in state 1, then cell n becomes 1 at the next step (example: cell C3 at t=0)
 2. If a cell n is in state 1 and its two adjacent neighbors (n-1 and n+1) are also in state 1, then cell n becomes 0 at the next time step (example: cell C11 at t=0)
 
 ![Figure 1: Evolution of a 1D cellular automaton through time.](Figure/1D_CellularAutomaton.png) <br>
 **Figure 1**: Evolution of a 1D cellular automaton through time.
 
-In the rest of this project, we mainly focus on 2D grids with two possible states (0 or 1). Each cell's neighborhood includes the 8 surrounding cells, as shown in red in Figure 2. This raises a boundary issue for the cells located on the edges of the grid. Various approaches exist to address this, and in this project, we chose to model the grid as a torus. For example, the bottom neighbors of the last row are the cells of the first row (see Figure 2 in blue), and the same logic applies to the columns.
+In the rest of this project, I mainly focus on 2D grids with two possible states (0 or 1). Each cell's neighbourhood includes the 8 surrounding cells, as shown in red in Figure 2 which raises a boundary issue for the cells located on the edges of the grid. Various approaches exist to address this, and in this project, I chose to model the grid as a torus. For example, the bottom neighbors of the last row are the cells of the first row (see Figure 2 in blue), and the same logic applies to the columns.
 
 ![Figure 2: Two target cells and their neighbours.](Figure/2D_torus_CellularAutomaton.png) <br>
-**Figure 2**: Two target cells and their neighbours. In red, the immediate neighbors; in bleu, neighbors unter the torus assumption.
+**Figure 2**: Two target cells and their neighbours. In red, the immediate neighbors; in blue, neighbors under the torus assumption.
 
 
 ## Conway's Game of Life
@@ -41,35 +44,30 @@ The interest of this model lies in the evolution of the automaton from an initia
 
 ## Searching for rules with genetic algorithms
 
-In the previous section, the rule used for the cellular automata was predefined. Here,we approach the problem from the opposite direction: we are given a target pattern, and the goal is to find a rule that can reproduce it exactly, or at least approximate it closely. One method would be to test all possible rules, but this is computationally expensive. A more efficient approach is to use a genetic algorithm.
+In the previous section, the rule used for the cellular automata was predefined. Here, I approach the problem from the opposite direction: I are given a target pattern, and the goal is to find a rule that can reproduce it exactly, or at least approximate it closely. One method would be to test all possible rules, but this is computationally expensive. A more efficient approach is to use a genetic algorithm.
 
-A genetic algorithm is a search technique for optimal solutions, introduced by John Holland in the 1970s. It starts with an initial population of individuals whose fitness is tracked over time. The population evolves through natural selection meaning that only a subset of individuals is selected for reproduction. Each individual is defined by a chromosome, thus the offsping ate generated by combining parts of the parents' chromosome, an equivalent to crossover, and subjected to random mutation. The crossover and mutation processes are illustrated in the photo below.
+A genetic algorithm is a search technique for optimal solutions, introduced by John Holland in the 1970s. It starts with an initial population of individuals whose fitness is tracked over time. The population evolves through natural selection meaning that only a subset of individuals is selected for reproduction. Each individual is represented by a chromosome. During reproduction, two chromosomes are combined (crossover) to create an offspring, which may also undergo random mutation. Crossover and mutation processes are illustrated in the photo below.
 
-![Figure 3: Illustration of crossing-over and mutation on the generation of an offspring chrosome from its two parents](Figure/GeneticAlgorithm_CrossoverMutation.png)
-**Figure 3**: Illustration of crossing-over and mutation on the generation of an offspring chrosome from its two parents.
+![Figure 3: Illustration of crossing-over and mutation on the generation of an offspring chromosome from its two parents](Figure/GeneticAlgorithm_CrossoverMutation.png)
+**Figure 3**: Illustration of crossing-over and mutation on the generation of an offspring chromosome from its two parents.
 
-How does that relate to our problem? Each individual represents a rule encoded in its chromosome. Selection favours rules according to their performance. New rules are generated by combining two rules, and randomly alter to prevent the algorithm getting stuvk in local optima. The key challenge of this method is to define an effective evalutation function and an appropriate encoding scheme to to represent a list of rules into a chromosome-like vector.
+How does that relate to our problem? Each individual represents a rule encoded in its chromosome. Selection favours rules according to their performance. New rules are generated by combining two rules, and randomly alter to prevent the algorithm getting stuck in local optima. The key challenge of this method is to define an effective evaluation function and an appropriate encoding scheme to to represent a list of rules into a chromosome-like vector.
 
-As one might expect, this method draws heavy inspiration from evolutionary biology. Therefore, we will approch this section through the lens of a biologist, exploring how mutation rate, recombination and selection affect the mean fitness of the population.
+As one might expect, this method draws heavy inspiration from evolutionary biology. Therefore, I will approach this section through the lens of a biologist, exploring how mutation rate, recombination and selection affect the mean fitness of the population.
 
 
 ## Applications
 After their introduction in computer science, cellular automata (CA) have been widely used in the physical and natural sciences to model phenomena such as galaxy formation, disease epidemics, and wildfires.
 
-In this section, we use cellular automata in two distinct applications:
-- to model the dynamic of a steady fluid flow represented by square particles,
+In this section, I use cellular automata in two distinct applications:
+- to model the dynamic of a steady fluid flow considering square particles,
 - in combination with a genetic algorithm, to search for specific spatial patterns.
 
 
-# Conclusion: Why use CA?
-Wolfram states that, compared to mathematical moddels such as differential equations, CA may serve as a clearer and more accurate framework for modeling complex natural phenomena. While mathetical models give an average description of a system's behavious, they cannot account for its individuals properties. In addition, the transition rules in CA are more comprehensive and their correspondance to the phenomenon are more straightforward. However, CA and mathematical models are complementary as CA shows global behaviour arising from individual behaviour.
+## Conclusion: Why use CA? 
+According to Wolfram, CA provide a clearer and often more accurate way to model complex natural systems than traditional mathematical approaches such as differential equations. While mathematical models describe the average behaviour of a system, CA capture the properties of individual elements, and their transition rules tend to be more intuitive. That said, CA and mathematical models are complementary: CA reveal how global behaviour emerges from individual actions.
 
-
-
-
-In field data, we never observe all possible initial conditions. Data oriented model often give very good predictions (ex: Shugart's Foret model)
-
-While most real-world applications of cellular automata rely on manually designed rules, such rules often originate from exploratory work — where a large number of possible rule sets are tested and evaluated. By evolving CA rules with a genetic algorithm, we aim to identify rule sets that produce desired behaviors (e.g., stability, propagation, speed). These experiments can lay the groundwork for future applications by narrowing down effective rule patterns.
+Although mathematical models have been extensively studied, much remains unexplored with CA. Applying CA to real-world scenarios requires frameworks that can incorporate observational data. In addition, most practical applications still rely on manually defined rules, originally discovered through extensive testing and evaluation. Using genetic algorithms to infer rules that align with field data offers a promising avenue for future development
 
 
 # Bibliography

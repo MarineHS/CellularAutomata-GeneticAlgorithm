@@ -11,7 +11,7 @@ def create_matrix(row, column, seed=None):
     Parameters:
         row (int): number of rows of the matrix
         column (int): number of columns of the matrix
-        seed (int, optional): seed to initialise random generator (for reproductibility)
+        seed (int, optional): seed to initialise random generator (for reproducibility)
 
     Return:
         numpy.ndarray: A binary matrix of shape (row, column)
