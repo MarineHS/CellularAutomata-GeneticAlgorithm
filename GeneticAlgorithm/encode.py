@@ -20,9 +20,9 @@ def EncodingLiving():
     keys = [str(i)+str(x) for i in range(2) for x in range(9)]
     values = random.randint(0, 2, size=len(keys)).tolist()
 
-    rules = dict(zip(keys, values))
+    rule = dict(zip(keys, values))
 
-    return (rules)
+    return rule
 
 def EncodingPattern():
     """
@@ -43,6 +43,6 @@ def EncodingPattern():
         keys.append(''.join(str(val) for val in i))
     values = random.randint(0, 2, size=len(keys)).tolist()
 
-    rules = dict(zip(keys, values))
+    rule = dict(zip(keys, values))
 
-    return (rules)
+    return rule
