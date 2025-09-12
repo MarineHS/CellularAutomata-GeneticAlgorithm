@@ -9,6 +9,7 @@ import pandas as pd
 import json
 import os
 import logging
+import argparse
 
 ### Set logging
 logger = logging.getLogger(__name__)
@@ -21,6 +22,7 @@ formatter = logging.Formatter('%(asctime)s %(message)s', datefmt='%d/%m/%Y %I:%M
 ch.setFormatter(formatter)
 logger.addHandler(ch)
 
+### Main function 
 def genetic_algorithm(encode, selection, crossover, output, mutation_rate=0.1, N=10, n_select=4, generation=10):
     """
     Select the best rule to achieve a given target
@@ -28,12 +30,12 @@ def genetic_algorithm(encode, selection, crossover, output, mutation_rate=0.1, N
     Parameters :
         - encode (str) : select the encoding type. Takes 2 possible values: 'living' or 'pattern'
         - selection (str) : select the type of selection. Takes 4 possible values: 'random', 'best', 'weighted' or 'tournament'
-        - crossover (str) : select the type of crossover. Takes 3 possible values: 'half', '1p', '2p'
+        - crossover (str) : select the type of crossover. Takes 3 possible values: 'half', '1p' or '2p'
         - output (str) : name of the output files
         - mutation_rate (float optional) : set the mutation rate. Default = 0.1
         - n_select (int optional) : number of parent rules selected. Default = 4
         - N (int optional) : initial population size. Default = 10
-        - generation (int optional) : number of generation. Default = 10 
+        - generation (int optional) : number of generations. Default = 10 
 
     Return :
         - json : 3 best rules
@@ -71,7 +73,7 @@ def genetic_algorithm(encode, selection, crossover, output, mutation_rate=0.1, N
             population[rule] = (population[rule], round(fitness_score, 4))
 
         # Add fitness values to csv
-        df.loc[len(df)] = [g] + [i[1] for i in population]
+        df.loc[len(df)] = [int(g)] + [i[1] for i in population]
 
         logger.info(f'generation: {g}; max fitness: {np.max([i[1] for i in population])}; mean fitness: {round(np.mean([i[1] for i in population]),2)}')
 
@@ -121,7 +123,7 @@ def genetic_algorithm(encode, selection, crossover, output, mutation_rate=0.1, N
 
         population[rule] = (population[rule], round(fitness_score), 4)
 
-    df.loc[len(df)] = [g] + [i[1] for i in population] 
+    df.loc[len(df)] = [int(g)] + [i[1] for i in population] 
 
     best_rules = select_best(population, 3)
     
@@ -139,9 +141,35 @@ def genetic_algorithm(encode, selection, crossover, output, mutation_rate=0.1, N
     )
     df.to_csv(os.path.join(results_dir, output + ".csv"), index=False) 
 
-    with open(os.path.join(results_dir, output + ".csv"), 'w') as file:
+    with open(os.path.join(results_dir, output + ".json"), 'w') as file:
         json.dump([i for i in best_rules], file, indent=4)
   
     logger.info('Genetic algorithm completed')
 
-#genetic_algorithm(encode='living', selection='random', crossover='1p', output='test', mutation_rate=0.1, N=10, n_select=4, generation=10)
+### Parse the arguments
+if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser(description='Run Genetic Algorithm')
+    parser.add_argument('-e', '--encode', type=str, choices=['living', 'pattern'], required=True, help='Select the encoding type between "living" or "pattern"')
+    parser.add_argument('-s', '--selection', type=str, choices=['random', 'best', 'weighted', 'tournament'], required=True, help='Select the type of selection between "random", "best", "weighted" or "tournament"')
+    parser.add_argument('-c', '--crossover', type=str, choices=['half', '1p', '2p'], required=True, help='Select the type of crossover between "half", "1p" or "2p"')
+    parser.add_argument('-o', '--output', type=str, required=True, help='Name of the output files')
+
+    parser.add_argument('--mutation', type=float, default=0.1, help='Set the mutation rate (0.1 by default)')
+    parser.add_argument('--parents', type=int, default=4, help='Number of parent rules selected (4 by default)')
+    parser.add_argument('--N', type=int, default=10, help='Initial population size (10 by default)')
+    parser.add_argument('--generation', default=10, type=int, help='Number of generations (10 by default)')
+    args = parser.parse_args()
+
+    if args.parents > args.N:
+        parser.error("Number of parents cannot exceed population size N")
+
+    genetic_algorithm(
+        encode=args.encode, 
+        selection=args.selection, 
+        crossover=args.crossover, 
+        output=args.output, 
+        mutation_rate=args.mutation, 
+        N=args.N, 
+        n_select=args.parents, 
+        generation=args.generation)
