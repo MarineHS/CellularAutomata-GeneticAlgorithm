@@ -8,13 +8,11 @@ In this section, I implement a cellular automaton that evolves according to Conw
 
 ## Requirements
 
-I used a Python3 environment to run the script. You may need to install the following packages :
-- matplotlib
-- argparse
-- json
-- numpy
-- copy
-- timeit (only required for `performance.py`)
+I used a Python3 environment to run the script. You may find all the external packages required in `requirements.txt`. Use the following command to install them if needed:
+
+```bash
+pip install -r requirements.txt
+```
 
 
 ## Functionalities  
