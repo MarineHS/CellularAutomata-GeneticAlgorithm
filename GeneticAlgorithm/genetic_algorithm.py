@@ -131,14 +131,13 @@ def genetic_algorithm(encode, selection, crossover, output, mutation_rate=0.1, N
     results_dir = os.path.join(os.getcwd(), "Results")
     os.makedirs(results_dir, exist_ok=True)
 
-    df.assign(
-        encode = encode,
-        selection = selection,
-        crossover = crossover,
-        mutation = mutation_rate,
-        N = N,
-        n_select = n_select
-    )
+    df["encode"] = encode
+    df["selection"] = selection
+    df["crossover"] = crossover
+    df["mutation"] = mutation_rate
+    df["N"] = N
+    df["n_select"] = n_select
+
     df.to_csv(os.path.join(results_dir, output + ".csv"), index=False) 
 
     with open(os.path.join(results_dir, output + ".json"), 'w') as file:
