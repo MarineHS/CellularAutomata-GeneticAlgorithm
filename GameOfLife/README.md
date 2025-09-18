@@ -29,7 +29,7 @@ This folder includes **three main scripts**:
 
 The main application can be run directly from the terminal. It requires either a matrix size or an input matrix provided by a JSON file and produces an animation. Example commands:
 
-```python
+```bash
 # Create a random matrix
 python main.py -s 50 50
 
@@ -49,7 +49,7 @@ This folder also provides several examples:
 
 `example.gif` was generated with:
 
-```python
+```bash
 python main.py -s 100 100 --seed 50
 ```
 
