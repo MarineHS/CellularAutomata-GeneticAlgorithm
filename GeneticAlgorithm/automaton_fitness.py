@@ -120,11 +120,8 @@ def fitness(matrix):
     """
     # Count the proportion of living cells
     rows, columns = matrix.shape
-    prop = matrix.sum() / (rows * columns)
+    prop = int(matrix.sum()) / (rows * columns)
 
-    # Gaussian function
-    mu = 0.5
-    sigma = 0.15
-    fitness = 100 * np.exp( -((prop-mu)**2) / (2*sigma**2))
+    fitness = -0.04*(100*prop-50)**2+100
 
     return fitness
