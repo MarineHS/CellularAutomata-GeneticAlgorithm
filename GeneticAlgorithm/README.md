@@ -44,9 +44,15 @@ python generalisation.py --file 'Results/test.json' --encode living
 ```
 
 
-:construction: **Work in progress**
+## Supplementary folder
+Two scripts are available in this folder:
+    - `experiments.py` : test the effect of one parameter on the performance of the algorithm
+    - `run_analysis.py` : returns a lineplot to compare the effect of one parameter on the performance of the algorithm and a boxplot showing the average score of the best rules on random cellular automata.
 
-I am currently working on the impact of the main parameters of the genetic algorithm.  
-Planned additions include three extra scripts:
-- Automation multiple runs with varying parameters
-- Visualisation and summary of results
+
+## Results folder
+Included in this folder are results from tests exploring how mutation rate and selection mode affect genetic algorithm performance.
+
+Our results show that:
+    - Completely random selection performs poorly compared to other selection strategies. This highlights the advantage of using a genetic algorithm to find optimal solutions, which is both faster and more effective than testing random solutions or evaluating them one by one.
+    - Increasing the mutation rate tends to reduce the algorithm’s performance. A high mutation rate introduces excessive changes to the rules, which can degrade good solutions and steer the search away from optimal scores. In contrast, a low mutation rate maintains enough diversity to explore new rules without drifting too far from the best ones.
