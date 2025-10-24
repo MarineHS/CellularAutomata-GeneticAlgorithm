@@ -8,7 +8,7 @@ The repository is structured into three main parts:
 
 **Part 1: Implementation of Conway's Game of Life** — folder *GameOfLife*.
 
-**Part 2: Implementation of the genetic algorithm** — :construction: *Under construction*. The core genetic algorithm is already implemented and functional, but further developments are ongoing.
+**Part 2: Implementation of the genetic algorithm** — folder *GeneticAlgorithm*
 
 **Part 3: Applications** — :construction: *Under construction*.
 
